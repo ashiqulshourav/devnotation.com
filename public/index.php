@@ -29,7 +29,7 @@ $statusMessages = [
     <meta name="description" content="Devnotation builds practical digital products, web experiences and technology solutions.">
     <meta name="theme-color" content="#070707">
     <title>Devnotation — Build useful things.</title>
-    <link rel="stylesheet" href="/assets/css/tailwind.css">
+    <link rel="stylesheet" href="./assets/css/tailwind.css">
 </head>
 <body class="bg-[#070707] text-zinc-100 antialiased selection:bg-lime-300 selection:text-black">
 <a class="fixed left-4 top-[-100px] z-[100] rounded-full bg-lime-300 px-4 py-2 text-sm font-bold text-black focus:top-4" href="#main">Skip to content</a>
@@ -107,6 +107,6 @@ $statusMessages = [
         <div class="flex flex-col justify-between gap-2 border-t border-white/10 pt-5 text-[11px] text-zinc-700 sm:flex-row"><span>© <?= date('Y') ?> Devnotation. All rights reserved.</span><span>Independent technology studio</span></div>
     </div>
 </footer>
-<script src="/assets/js/app.js" defer></script>
+<script src="./assets/js/app.js" defer></script>
 </body>
 </html>
