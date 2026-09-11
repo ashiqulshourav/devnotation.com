@@ -1,0 +1,7 @@
+.env
+/vendor/
+storage/rate-limit/*
+!storage/rate-limit/.gitignore
+.DS_Store
+.idea/
+.vscode/

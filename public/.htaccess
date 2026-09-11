@@ -1,0 +1,31 @@
+Options -Indexes
+
+RewriteEngine On
+
+# Block access to hidden files and common project files.
+RewriteRule (^|/)\. - [F,L]
+RewriteRule ^(?:composer\.(?:json|lock)|README\.md|\.env.*)$ - [F,L,NC]
+
+# Prevent direct execution of source files under assets.
+<FilesMatch "\.(?:php|phar|phtml|php[0-9]*)$">
+    Require all denied
+</FilesMatch>
+
+# Re-allow only the two public PHP entry points.
+<Files "index.php">
+    Require all granted
+</Files>
+
+<Files "contact.php">
+    Require all granted
+</Files>
+
+# Basic security headers.
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+    Header always set Cross-Origin-Opener-Policy "same-origin"
+    Header always set Cross-Origin-Resource-Policy "same-origin"
+</IfModule>
