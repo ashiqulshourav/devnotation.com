@@ -23,8 +23,9 @@ function send_security_headers(): void
         "object-src 'none'; " .
         "img-src 'self' data:; " .
         "style-src 'self'; " .
-        "script-src 'self'; " .
-        "connect-src 'self'; " .
+        "script-src 'self' https://challenges.cloudflare.com; " .
+        "connect-src 'self' https://challenges.cloudflare.com; " .
+        "frame-src https://challenges.cloudflare.com; " .
         "font-src 'self';"
     );
 }
@@ -92,6 +93,11 @@ function redirect_with_status(string $status): never
         $status = 'error';
     }
 
-    header('Location: /?status=' . rawurlencode($status) . '#contact', true, 303);
+    $scriptPath = str_replace('\\', '/', (string)($_SERVER['SCRIPT_NAME'] ?? '/'));
+    $basePath = rtrim(str_replace('\\', '/', dirname($scriptPath)), '/');
+    $location = ($basePath === '' ? '' : $basePath)
+        . '/?status=' . rawurlencode($status) . '#contact';
+
+    header('Location: ' . $location, true, 303);
     exit;
 }

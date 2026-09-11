@@ -15,6 +15,7 @@
   html {
     background: #ffffff;
     scroll-behavior: smooth;
+    scroll-padding-top: 90px;
   }
 
   body {
@@ -46,6 +47,15 @@ html {
     linear-gradient(to right, rgba(24, 24, 27, 0.045) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(24, 24, 27, 0.045) 1px, transparent 1px);
   background-size: 40px 40px;
+}
+
+.hero-grid-pattern {
+  background-image:
+    linear-gradient(to right, rgba(24, 24, 27, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(24, 24, 27, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: linear-gradient(to bottom, black, transparent 85%);
+  -webkit-mask-image: linear-gradient(to bottom, black, transparent 85%);
 }
 
 /* Lime glow */

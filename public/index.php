@@ -66,7 +66,7 @@ $statusMessages = [
 
 
 <!-- HEADER -->
-<header class="absolute inset-x-0 top-0 z-20">
+<header class="sticky inset-x-0 top-0 z-50 bg-white/95 backdrop-blur-md">
 
     <div class="mx-auto flex min-h-[84px] w-[min(1180px,calc(100%-32px))] items-center justify-between border-b border-zinc-200">
 
@@ -107,14 +107,7 @@ $statusMessages = [
 
         <!-- subtle grid -->
         <div
-            class="pointer-events-none absolute inset-0 -z-10 opacity-70"
-            style="
-                background-image:
-                    linear-gradient(to right, rgba(24,24,27,.035) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(24,24,27,.035) 1px, transparent 1px);
-                background-size: 56px 56px;
-                mask-image: linear-gradient(to bottom, black, transparent 85%);
-            "
+            class="hero-grid-pattern pointer-events-none absolute inset-0 -z-10 opacity-70"
         ></div>
 
 
@@ -441,7 +434,7 @@ $statusMessages = [
 
 
                 <form
-                    action="/contact.php"
+                    action="./contact.php"
                     method="post"
                     id="contact-form"
                     novalidate
@@ -476,49 +469,61 @@ $statusMessages = [
 
                     <!-- EMAIL -->
                     <div>
+    <label
+        class="mb-2 block text-xs font-bold text-zinc-700"
+        for="email"
+    >
+        Your email
+    </label>
 
-                        <label
-                            class="mb-2 block text-xs font-bold text-zinc-700"
-                            for="email"
-                        >
-                            Your email
-                        </label>
+    <input
+        class="form-input"
+        type="email"
+        id="email"
+        name="email"
+        maxlength="254"
+        autocomplete="email"
+                        aria-describedby="email-error"
+        required
+        placeholder="you@example.com"
+    >
 
-                        <input
-                            class="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3.5 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-lime-500 focus:ring-4 focus:ring-lime-500/10"
-                            type="email"
-                            id="email"
-                            name="email"
-                            maxlength="254"
-                            autocomplete="email"
-                            required
-                            placeholder="you@example.com"
-                        >
-
-                    </div>
+    <p
+        class="field-error"
+        id="email-error"
+        data-error-for="email"
+        aria-live="polite"
+    ></p>
+</div>
 
 
                     <!-- SUBJECT -->
                     <div>
+    <label
+        class="mb-2 block text-xs font-bold text-zinc-700"
+        for="subject"
+    >
+        Subject
+    </label>
 
-                        <label
-                            class="mb-2 block text-xs font-bold text-zinc-700"
-                            for="subject"
-                        >
-                            Subject
-                        </label>
+    <input
+        class="form-input"
+        type="text"
+        id="subject"
+        name="subject"
+        maxlength="150"
+                        aria-describedby="subject-error"
+        required
+        placeholder="What would you like to build?"
+    >
 
-                        <input
-                            class="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3.5 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-lime-500 focus:ring-4 focus:ring-lime-500/10"
-                            type="text"
-                            id="subject"
-                            name="subject"
-                            maxlength="150"
-                            required
-                            placeholder="What can we help with?"
-                        >
-
-                    </div>
+    <p
+        class="field-error"
+        id="subject-error"
+        data-error-for="subject"
+        aria-live="polite"
+    ></p>
+</div>
 
 
                     <!-- MESSAGE -->
@@ -541,15 +546,23 @@ $statusMessages = [
 
 
                         <textarea
-                            class="min-h-[180px] w-full resize-y rounded-xl border border-zinc-300 bg-white px-4 py-3.5 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-lime-500 focus:ring-4 focus:ring-lime-500/10"
+                            class="min-h-[180px] form-input w-full resize-y rounded-xl border border-zinc-300 bg-white px-4 py-3.5 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-lime-500 focus:ring-4 focus:ring-lime-500/10"
                             id="message"
                             name="message"
                             maxlength="5000"
                             minlength="10"
                             rows="7"
+                            aria-describedby="message-error"
                             required
                             placeholder="Tell us a little about your idea or project..."
                         ></textarea>
+
+                        <p
+                            class="field-error"
+                            id="message-error"
+                            data-error-for="message"
+                            aria-live="polite"
+                        ></p>
 
                     </div>
 
