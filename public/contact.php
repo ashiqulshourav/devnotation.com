@@ -31,9 +31,25 @@ if (!rate_limit('contact:' . client_ip(), $maxRequests, $window)) {
     redirect_with_status('busy');
 }
 
+$globalMaxRequests = max(1, (int) app_env('GLOBAL_RATE_LIMIT_MAX_REQUESTS', '30'));
+
+$globalWindow = max(60, (int) app_env('GLOBAL_RATE_LIMIT_WINDOW', '900'));
+
+if (!rate_limit('contact:global', $globalMaxRequests, $globalWindow)) {
+    redirect_with_status('busy');
+}
+
 $email = trim((string)($_POST['email'] ?? ''));
 $subject = trim((string)($_POST['subject'] ?? ''));
 $message = trim((string)($_POST['message'] ?? ''));
+
+$emailRateLimit = max(1, (int) app_env('EMAIL_RATE_LIMIT_MAX_REQUESTS', '3'));
+$emailRateLimitWindow = max(60, (int) app_env('EMAIL_RATE_LIMIT_WINDOW', '3600'));
+$emailKey = 'contact:email:' . strtolower($email);
+
+if (!rate_limit($emailKey, $emailRateLimit, $emailRateLimitWindow)) {
+    redirect_with_status('busy');
+}
 
 $validEmail = filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
 $validSubject = $subject !== '' && mb_strlen($subject) <= 150;

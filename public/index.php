@@ -15,16 +15,6 @@ $turnstileEnabled = filter_var(
 );
 
 $turnstileSiteKey = app_env('TURNSTILE_SITE_KEY', '');
-
-$statusMessages = [
-    'sent' => ['success', 'Message sent successfully. We’ll get back to you soon.'],
-    'error' => ['error', 'Something went wrong while sending your message. Please try again.'],
-    'invalid' => ['error', 'Please check the form and try again.'],
-    'busy' => ['error', 'Too many requests. Please wait a little and try again.'],
-    'forbidden' => ['error', 'Your request could not be verified. Please refresh and try again.'],
-];
-
-[$statusType, $statusMessage] = $statusMessages[$status] ?? ['', ''];
 ?>
 
 <!doctype html>
@@ -443,20 +433,13 @@ $statusMessages = [
                     class="rounded-2xl border border-[#D9E5F4] bg-[#F5F8FC] p-5 shadow-sm sm:p-8"
                 >
 
-                    <?php if ($statusMessage !== ''): ?>
-
-                        <div
-                            class="mb-5 rounded-xl border px-4 py-3 text-sm
-                            <?= $statusType === 'success'
-                                ? 'border-[#B8D5F3] bg-[#EAF2FC] text-[#14457F]'
-                                : 'border-red-200 text-red-700'
-                            ?>"
-                            role="status"
-                        >
-                            <?= h($statusMessage) ?>
-                        </div>
-
-                    <?php endif; ?>
+                    <div
+                        id="status-message"
+                        class="mb-5 hidden rounded-xl border px-4 py-3 text-sm"
+                        data-status="<?= h((string)($status ?? '')) ?>"
+                        role="status"
+                        aria-live="polite"
+                    ></div>
 
 
                     <form
@@ -685,7 +668,7 @@ $statusMessages = [
 
 
     <script
-        src="./assets/js/app.js?v=1.0.0"
+        src="./assets/js/app.js?v=1.0.1"
         defer
     ></script>
 

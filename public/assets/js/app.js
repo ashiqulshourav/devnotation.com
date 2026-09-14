@@ -1,6 +1,49 @@
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("contact-form");
 
+    const statusMessage = document.getElementById("status-message");
+    const statusMessages = {
+        sent: {
+            type: "success",
+            message: "Message sent successfully. We’ll get back to you soon."
+        },
+        error: {
+            type: "error",
+            message: "Something went wrong while sending your message. Please try again."
+        },
+        invalid: {
+            type: "error",
+            message: "Please check the form and try again."
+        },
+        busy: {
+            type: "error",
+            message: "Too many requests. Please wait a little and try again."
+        },
+        forbidden: {
+            type: "error",
+            message: "Your request could not be verified. Please refresh and try again."
+        }
+    };
+
+    if (statusMessage) {
+        const status = statusMessages[statusMessage.dataset.status];
+
+        if (status) {
+            statusMessage.textContent = status.message;
+            statusMessage.classList.remove("hidden");
+
+            if (status.type === "success") {
+                statusMessage.classList.add(
+                    "border-[#B8D5F3]",
+                    "bg-[#EAF2FC]",
+                    "text-[#14457F]"
+                );
+            } else {
+                statusMessage.classList.add("border-red-200", "text-red-700");
+            }
+        }
+    }
+
     if (!form) {
         return;
     }
@@ -152,6 +195,38 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function showStatus(statusKey) {
+        if (!statusMessage) {
+            return;
+        }
+
+        const status = statusMessages[statusKey];
+
+        if (!status) {
+            return;
+        }
+
+        statusMessage.textContent = status.message;
+        statusMessage.classList.remove(
+            "hidden",
+            "border-[#B8D5F3]",
+            "bg-[#EAF2FC]",
+            "text-[#14457F]",
+            "border-red-200",
+            "text-red-700"
+        );
+
+        if (status.type === "success") {
+            statusMessage.classList.add(
+                "border-[#B8D5F3]",
+                "bg-[#EAF2FC]",
+                "text-[#14457F]"
+            );
+        } else {
+            statusMessage.classList.add("border-red-200", "text-red-700");
+        }
+    }
+
     Object.values(fields).forEach((field) => {
         if (!field) {
             return;
@@ -174,7 +249,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateMessageCount();
 
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
         let isValid = true;
         let firstInvalidField = null;
 
@@ -195,8 +272,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (!isValid) {
-            event.preventDefault();
-
             firstInvalidField?.focus({
                 preventScroll: false
             });
@@ -219,6 +294,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (submitButton.tagName === "BUTTON") {
                 submitButton.textContent = "Sending...";
+            }
+        }
+
+        try {
+            const response = await fetch(form.action, {
+                method: "POST",
+                body: new FormData(form),
+                headers: {
+                    Accept: "application/json"
+                }
+            });
+            const result = await response.json();
+
+            showStatus(result.status);
+
+            if (result.status === "sent") {
+                form.reset();
+                updateMessageCount();
+            }
+        } catch {
+            showStatus("error");
+        } finally {
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.classList.remove("opacity-60", "cursor-not-allowed");
+                submitButton.textContent = submitButton.dataset.originalText || "Send message";
             }
         }
     });

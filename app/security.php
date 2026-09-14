@@ -93,10 +93,13 @@ function redirect_with_status(string $status): never
         $status = 'error';
     }
 
-    $scriptPath = str_replace('\\', '/', (string)($_SERVER['SCRIPT_NAME'] ?? '/'));
-    $basePath = rtrim(str_replace('\\', '/', dirname($scriptPath)), '/');
-    $location = ($basePath === '' ? '' : $basePath)
-        . '/?status=' . rawurlencode($status) . '#contact';
+    if (str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json')) {
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['status' => $status], JSON_THROW_ON_ERROR);
+        exit;
+    }
+
+    $location = '/?status=' . rawurlencode($status) . '#contact';
 
     header('Location: ' . $location, true, 303);
     exit;
