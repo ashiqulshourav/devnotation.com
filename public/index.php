@@ -10,11 +10,11 @@ $status = $_GET['status'] ?? null;
 $csrf = csrf_token();
 
 $turnstileEnabled = filter_var(
-    app_env('TURNSTILE_ENABLED', 'false'),
+    app_env('TURNSTILE_ENABLED', 'true'),
     FILTER_VALIDATE_BOOL
 );
 
-$turnstileSiteKey = app_env('TURNSTILE_SITE_KEY', '');
+$turnstileSiteKey = app_env('TURNSTILE_SITE_KEY', '0x4AAAAAAE4fz1mfwQ74n1lx');
 ?>
 
 <!doctype html>

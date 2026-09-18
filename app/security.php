@@ -23,8 +23,8 @@ function send_security_headers(): void
         "object-src 'none'; " .
         "img-src 'self' data:; " .
         "style-src 'self'; " .
-        "script-src 'self' https://challenges.cloudflare.com; " .
-        "connect-src 'self' https://challenges.cloudflare.com; " .
+        "script-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com; " .
+        "connect-src 'self' https://challenges.cloudflare.com https://cloudflareinsights.com; " .
         "frame-src https://challenges.cloudflare.com; " .
         "font-src 'self';"
     );

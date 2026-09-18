@@ -62,8 +62,8 @@ if (!$validEmail || !$validSubject || !$validMessage) {
 $email = clean_header_value($email);
 $subject = clean_header_value($subject);
 
-$turnstileEnabled = filter_var(app_env('TURNSTILE_ENABLED', 'false'), FILTER_VALIDATE_BOOL);
-$turnstileSecret = app_env('TURNSTILE_SECRET_KEY', '');
+$turnstileEnabled = filter_var(app_env('TURNSTILE_ENABLED', 'true'), FILTER_VALIDATE_BOOL);
+$turnstileSecret = app_env('TURNSTILE_SECRET_KEY', '0x4AAAAAAE4fz876bm7tF8fOuO6oB7Mvixo');
 
 if ($turnstileEnabled) {
     if ($turnstileSecret === '') {
