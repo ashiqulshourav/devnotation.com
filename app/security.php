@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 function send_security_headers(): void
 {
+    $nonce = base64_encode(random_bytes(16));
+    $GLOBALS['csp_nonce'] = $nonce;
+
     header('X-Content-Type-Options: nosniff');
     header('X-Frame-Options: DENY');
     header('Referrer-Policy: strict-origin-when-cross-origin');
@@ -23,11 +26,16 @@ function send_security_headers(): void
         "object-src 'none'; " .
         "img-src 'self' data:; " .
         "style-src 'self'; " .
-        "script-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com; " .
+        "script-src 'nonce-{$nonce}' 'strict-dynamic' 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com; " .
         "connect-src 'self' https://challenges.cloudflare.com https://cloudflareinsights.com; " .
         "frame-src https://challenges.cloudflare.com; " .
         "font-src 'self';"
     );
+}
+
+function csp_nonce(): string
+{
+    return (string)($GLOBALS['csp_nonce'] ?? '');
 }
 
 function start_secure_session(): void

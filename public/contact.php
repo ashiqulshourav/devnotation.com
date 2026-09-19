@@ -63,15 +63,19 @@ $email = clean_header_value($email);
 $subject = clean_header_value($subject);
 
 $turnstileEnabled = filter_var(app_env('TURNSTILE_ENABLED', 'true'), FILTER_VALIDATE_BOOL);
-$turnstileSecret = app_env('TURNSTILE_SECRET_KEY', '0x4AAAAAAE4fz876bm7tF8fOuO6oB7Mvixo');
+$turnstileSecret = trim((string) app_env('TURNSTILE_SECRET_KEY', ''));
+$turnstileHostnames = array_values(array_filter(array_map(
+    'trim',
+    explode(',', (string) app_env('TURNSTILE_HOSTNAMES', ''))
+)));
 
 if ($turnstileEnabled) {
-    if ($turnstileSecret === '') {
+    if ($turnstileSecret === '' || $turnstileHostnames === []) {
         redirect_with_status('error');
     }
 
     $token = (string)($_POST['cf-turnstile-response'] ?? '');
-    if ($token === '') {
+    if ($token === '' || strlen($token) > 2048) {
         redirect_with_status('invalid');
     }
 
@@ -98,7 +102,12 @@ if ($turnstileEnabled) {
 
     $verificationData = json_decode($verification ?: '', true);
 
-    if (!is_array($verificationData) || empty($verificationData['success'])) {
+    if (
+        !is_array($verificationData)
+        || empty($verificationData['success'])
+        || ($verificationData['action'] ?? '') !== 'contact'
+        || !in_array((string)($verificationData['hostname'] ?? ''), $turnstileHostnames, true)
+    ) {
         redirect_with_status('invalid');
     }
 }

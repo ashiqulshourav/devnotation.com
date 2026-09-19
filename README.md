@@ -68,6 +68,11 @@ Incoming messages are sent by PHP through SMTP. Configure:
 - MAIL_FROM_ADDRESS: an address you control on the sending domain
 - MAIL_TO_ADDRESS: your private destination mailbox
 
+For Turnstile, configure `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`, and
+`TURNSTILE_HOSTNAMES` in the environment. `TURNSTILE_HOSTNAMES` must contain
+the exact frontend hostname returned by Cloudflare for the deployment, such as
+`devnotation.com`. Use a separate local value when testing locally.
+
 ## 6. Cloudflare
 
 Recommended production setup:

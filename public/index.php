@@ -578,6 +578,7 @@ $turnstileSiteKey = app_env('TURNSTILE_SITE_KEY', '0x4AAAAAAE4fz1mfwQ74n1lx');
                                 <div
                                     class="cf-turnstile"
                                     data-sitekey="<?= h($turnstileSiteKey) ?>"
+                                    data-action="contact"
                                 ></div>
 
                             </div>
@@ -661,6 +662,7 @@ $turnstileSiteKey = app_env('TURNSTILE_SITE_KEY', '0x4AAAAAAE4fz1mfwQ74n1lx');
 
         <script
             src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+            nonce="<?= h(csp_nonce()) ?>"
             defer
         ></script>
 
@@ -669,6 +671,7 @@ $turnstileSiteKey = app_env('TURNSTILE_SITE_KEY', '0x4AAAAAAE4fz1mfwQ74n1lx');
 
     <script
         src="./assets/js/app.js?v=1.0.1"
+        nonce="<?= h(csp_nonce()) ?>"
         defer
     ></script>
 
